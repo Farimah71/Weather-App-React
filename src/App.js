@@ -1,5 +1,5 @@
-import Search from "./Search";
-import "./styles.css";
+import Search from "./components/search";
+import "./App.css";
 
 export default function App() {
   return (
