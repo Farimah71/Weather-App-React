@@ -33,3 +33,21 @@
   opacity: 1;
   transition: opacity 0.5s;
 }
+
+/* spinner loading animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  animation: spin 1.8s infinite;
+  width: 30px;
+  height: 30px;
+}

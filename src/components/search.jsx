@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Spinner from "./spinner";
 
 const Search = () => {
   const [cityQuery, setCityQuery] = useState("");
@@ -36,15 +37,16 @@ const Search = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <input
-          type="search"
-          value={cityQuery}
-          onChange={handleChange}
-          placeholder="Enter a city..."
-        />
-        <button type="submit" title="Search city climate">
-          Search
-        </button>
+          <input
+            type="search"
+            value={cityQuery}
+            onChange={handleChange}
+            placeholder="Enter a city..."
+          />
+          <button type="submit" title="Search city climate">
+            Search
+          </button>
+          <Spinner />
       </form>
 
       <div id="message" className={messageClass}>
