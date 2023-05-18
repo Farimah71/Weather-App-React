@@ -47,7 +47,7 @@
 }
 
 .rotate {
-  animation: spin 1.8s infinite;
+  animation: spin 1.5s infinite;
   width: 30px;
   height: 30px;
 }

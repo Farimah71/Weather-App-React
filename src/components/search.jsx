@@ -11,6 +11,7 @@ const Search = () => {
   const [humidity, setHumidity] = useState(0);
   const [icon, setIcon] = useState("");
   const [messageClass, setMessageClass] = useState("hidden");
+  const [loading, setLoading] = useState(false);
 
   const ApiKey = "bd6d9ef56abf406c77a639e236aa17ea";
   const URL = `https://api.openweathermap.org/data/2.5/weather?q=${cityQuery}&appid=${ApiKey}&units=metric`;
@@ -18,18 +19,24 @@ const Search = () => {
 
   const handleChange = (event) => {
     setCityQuery(event.target.value);
+    setLoading(true);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.get(URL).then((response) => {
-      setCityName(response.data.name);
-      setTemp(Math.floor(response.data.main.temp));
-      setDesc(response.data.weather[0].description);
-      setWind(response.data.wind.speed);
-      setHumidity(response.data.main.humidity);
-      setIcon(response.data.weather[0].icon);
-    });
+    axios
+      .get(URL)
+      .then((response) => {
+        setCityName(response.data.name);
+        setTemp(Math.floor(response.data.main.temp));
+        setDesc(response.data.weather[0].description);
+        setWind(response.data.wind.speed);
+        setHumidity(response.data.main.humidity);
+        setIcon(response.data.weather[0].icon);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
 
     setMessageClass("show");
   };
@@ -37,16 +44,16 @@ const Search = () => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-          <input
-            type="search"
-            value={cityQuery}
-            onChange={handleChange}
-            placeholder="Enter a city..."
-          />
-          <button type="submit" title="Search city climate">
-            Search
-          </button>
-          <Spinner />
+        <input
+          type="search"
+          value={cityQuery}
+          onChange={handleChange}
+          placeholder="Enter a city..."
+        />
+        <button type="submit" title="Search city climate">
+          Search
+        </button>
+        {loading && <Spinner />}
       </form>
 
       <div id="message" className={messageClass}>
