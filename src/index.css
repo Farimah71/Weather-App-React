@@ -34,6 +34,34 @@
   transition: opacity 0.5s;
 }
 
+@keyframes error-shake {
+  0% {
+    transform: skew(15deg)
+  }
+
+  25% {
+    transform: skew(-15deg)
+  }
+
+  50% {
+    transform: skew(15deg)
+  }
+
+  75% {
+    transform: skew(-15deg)
+  }
+
+  100% {
+    transform: skew(15deg)
+  }
+}
+
+.not-found-prompt {
+  color: rgb(237, 146, 47);
+  font-size: 18px;
+  animation: error-shake 3s infinite linear;
+}
+
 /* spinner loading animation */
 @keyframes spin {
   from {

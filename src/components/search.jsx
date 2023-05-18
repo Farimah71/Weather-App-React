@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Spinner from "./spinner";
+import NotFound from "./notFound";
 
 const Search = () => {
   const [cityQuery, setCityQuery] = useState("");
   const [weather, setWeather] = useState({});
   const [messageClass, setMessageClass] = useState("hidden");
   const [loading, setLoading] = useState(false);
+  const [responseOk, setResponseOk] = useState(true);
 
   const ApiKey = "bd6d9ef56abf406c77a639e236aa17ea";
   const URL = `https://api.openweathermap.org/data/2.5/weather?q=${cityQuery}&appid=${ApiKey}&units=metric`;
@@ -30,6 +32,11 @@ const Search = () => {
           humidity: response.data.main.humidity,
           icon: response.data.weather[0].icon,
         });
+        setResponseOk(true);
+      })
+      .catch(() => {
+        setMessageClass("hidden");
+        setResponseOk(false);
       })
       .finally(() => {
         setLoading(false);
@@ -53,16 +60,20 @@ const Search = () => {
         {loading && <Spinner />}
       </form>
 
-      <div id="message" className={messageClass}>
-        <span className="cityName">{weather.cityName}</span>
-        <p>Temperature: {weather.temp}°C</p>
-        <p>Description: {weather.desc}</p>
-        <p>Wind Speed: {weather.wind} km/h</p>
-        <p>Humidity: {weather.humidity}%</p>
-        <span>
-          <img src={iconURL} alt={weather.desc} />
-        </span>
-      </div>
+      {responseOk ? (
+        <div id="message" className={messageClass}>
+          <span className="cityName">{weather.cityName}</span>
+          <p>Temperature: {weather.temp}°C</p>
+          <p>Description: {weather.desc}</p>
+          <p>Wind Speed: {weather.wind} km/h</p>
+          <p>Humidity: {weather.humidity}%</p>
+          <span>
+            <img src={iconURL} alt={weather.desc} />
+          </span>
+        </div>
+      ) : (
+        <NotFound />
+      )}
     </>
   );
 };
