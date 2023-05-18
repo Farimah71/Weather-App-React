@@ -4,18 +4,13 @@ import Spinner from "./spinner";
 
 const Search = () => {
   const [cityQuery, setCityQuery] = useState("");
-  const [cityName, setCityName] = useState("");
-  const [Temp, setTemp] = useState(0);
-  const [desc, setDesc] = useState("");
-  const [wind, setWind] = useState(0);
-  const [humidity, setHumidity] = useState(0);
-  const [icon, setIcon] = useState("");
+  const [weather, setWeather] = useState({});
   const [messageClass, setMessageClass] = useState("hidden");
   const [loading, setLoading] = useState(false);
 
   const ApiKey = "bd6d9ef56abf406c77a639e236aa17ea";
   const URL = `https://api.openweathermap.org/data/2.5/weather?q=${cityQuery}&appid=${ApiKey}&units=metric`;
-  const iconURL = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  const iconURL = `https://openweathermap.org/img/wn/${weather.icon}@2x.png`;
 
   const handleChange = (event) => {
     setCityQuery(event.target.value);
@@ -27,12 +22,14 @@ const Search = () => {
     axios
       .get(URL)
       .then((response) => {
-        setCityName(response.data.name);
-        setTemp(Math.floor(response.data.main.temp));
-        setDesc(response.data.weather[0].description);
-        setWind(response.data.wind.speed);
-        setHumidity(response.data.main.humidity);
-        setIcon(response.data.weather[0].icon);
+        setWeather({
+          cityName: response.data.name,
+          temp: Math.floor(response.data.main.temp),
+          desc: response.data.weather[0].description,
+          wind: response.data.wind.speed,
+          humidity: response.data.main.humidity,
+          icon: response.data.weather[0].icon,
+        });
       })
       .finally(() => {
         setLoading(false);
@@ -57,13 +54,13 @@ const Search = () => {
       </form>
 
       <div id="message" className={messageClass}>
-        <span className="cityName">{cityName}</span>
-        <p>Temperature: {Temp}°C</p>
-        <p>Description: {desc}</p>
-        <p>Wind Speed: {wind} km/h</p>
-        <p>Humidity: {humidity}%</p>
+        <span className="cityName">{weather.cityName}</span>
+        <p>Temperature: {weather.temp}°C</p>
+        <p>Description: {weather.desc}</p>
+        <p>Wind Speed: {weather.wind} km/h</p>
+        <p>Humidity: {weather.humidity}%</p>
         <span>
-          <img src={iconURL} alt={desc} />
+          <img src={iconURL} alt={weather.desc} />
         </span>
       </div>
     </>
